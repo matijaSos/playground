@@ -1,4 +1,4 @@
 playground
 ==========
 
-Programming exercises and experiments
+Here i do my programming exercises and experiments.
