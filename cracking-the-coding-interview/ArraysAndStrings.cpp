@@ -36,11 +36,11 @@ bool hasUniqueChars_noMap(string s)
 
    for (int i = 0; i < s.size(); i++)
    {
-        int pos = s[i] % abcSize;
-        if (occs[pos] > 0)
+        int key = s[i] % abcSize;
+        if (occs[key] > 0)
             return false;
         else
-            occs[pos]++;
+            occs[key]++;
    }
    return true;
 }
