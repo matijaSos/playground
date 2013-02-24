@@ -243,15 +243,68 @@ int** rotateMatrix(int** m, int size)
     return m;
 }
 
+// ------------------------------------ 1.7 -------------------------------------- //
+/**
+ *  If element in MxN matrix is 0, its entire row and column are set to 0
+ *
+ *  Remarks:
+ *      1. If we would want to save memory, we could use set instead of arrays for M and N.
+ *         But, since we store MxN matrix we can probably also store two extra arrays of M and N sizes.
+ */
+
+/** Solution - loop once through matrix and store which rows and columns need
+ *             to be zeroed.
+ *           - loop once again through matrix and zero element if its row or column is marked.
+ */
+
+int** zeroMatrix(int** m, int M, int N)
+{
+    // If row/col needs to be zeroed, it is set to true
+    bool rows[M]; memset(rows, 0, sizeof(rows));
+    bool cols[N]; memset(cols, 0, sizeof(cols));
+
+    // Mark rows/cols which need to be zeroed
+    for(int row = 0; row < M; row++)
+        for (int col = 0; col < N; col++)
+            if (m[row][col] == 0)
+            {
+                rows[row] = true;
+                cols[col] = true;
+            }
+
+    // Zeroing
+    for(int row = 0; row < M; row++)
+        for (int col = 0; col < N; col++)
+            if (rows[row] && cols[col])
+                m[row][col] = 0;
+
+    return m;
+}
+
+// ------------------------------------ 1.8 -------------------------------------- //
+/**
+ *  Check if string1 is rotation of string2 by using substring method only once.
+ *
+ *  Remarks:
+ *      1. I should check if string1 and string2 are of the same length before continuing.
+ */
+
+bool isRotation(string s1, string s2)
+{
+    if (s1.size() != s2.size()) return false;
+
+    string s2_double = s2 + s2;
+    int found = s2_double.find(s1);
+
+    return (found != string::npos);
+}
+
+
 /** Main, for testing
  */
 int main(int argc, char const *argv[])
 {
-
-    string str = "ab";
-    cout << compress(str) << endl;
-
-
+    cout << "zeko, koza: " << isRotation("zeko", "koza") << endl;
 
     return 0;
 }
