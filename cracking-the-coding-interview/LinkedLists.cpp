@@ -3,6 +3,7 @@
  */
 
 #include <iostream>
+#include <map>
 
 using namespace std;
 
@@ -68,6 +69,36 @@ class Node
         return this;
     }
 };
+
+// ------------------------------------ 2.1 -------------------------------------- //
+/**
+ *  Remove duplicates from an unosorted linked list
+ */
+
+/** Head for sure won't be changed, so method is void
+ */
+void removeDups(Node* head)
+{
+    map<int, bool> used;
+    used[head->data] = true;
+
+    Node* curr = head;
+    while(curr->next != NULL)
+    {
+        if (used[curr->next->data])
+        {
+            Node* tmp = curr->next;
+            curr->next = curr->next->next;
+
+            delete tmp;
+        }
+        else
+        {
+            used[curr->next->data] = true;
+            curr = curr->next; 
+        }
+    }
+}
 
 int main()
 {
