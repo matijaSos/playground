@@ -75,7 +75,10 @@ class Node
  *  Remove duplicates from an unosorted linked list
  */
 
-/** Head for sure won't be changed, so method is void
+/** Solution using map
+ *
+ *  Remarks:
+ *      1. Head for sure won't be changed, so method is void
  */
 void removeDups(Node* head)
 {
@@ -100,32 +103,55 @@ void removeDups(Node* head)
     }
 }
 
+/** FOLLOW UP: Solution without temporary buffer (map)
+ *
+ *  n^2 time complexity
+ */
+void removeDups_noBuf(Node* head)
+{
+    Node* base = head;
+    while (base != NULL)
+    {
+        Node* runner = base;
+        while (runner->next != NULL)
+        {
+            if (runner->next->data == base->data)
+            {
+                Node* tmp = runner->next;
+                runner->next = runner->next->next;
+
+                delete tmp;
+            }
+            else
+                runner = runner->next;
+        }
+        base = base->next;
+    }
+}
+
 int main()
 {
 
     Node* head = new Node(23);
     head->appendToTail(34);
+    head->appendToTail(11);
     head->appendToTail(2);
     head->appendToTail(11);
+    head->appendToTail(11);
     head->appendToTail(34);
+    head->appendToTail(2);
+    head->appendToTail(2);
+    head->appendToTail(2);
+    head->appendToTail(11);
 
     cout << "Initial list: " << endl;
     head->printList();
     cout << endl;
 
-    // Try deleting
-    cout << "Deleted head: " << endl;
-    head = head->deleteFirstFromList(23);
-    head->printList();
-    cout << endl;
+    // Try deleting duplicates
+    removeDups_noBuf(head);
 
-    cout << "Deleted first 34: " << endl;
-    head = head->deleteFirstFromList(34);
-    head->printList();
-    cout << endl;
-    
-    cout << "Deleted first 323: " << endl;
-    head = head->deleteFirstFromList(323);
+    cout << "No duplicates: " << endl;
     head->printList();
     cout << endl;
 
