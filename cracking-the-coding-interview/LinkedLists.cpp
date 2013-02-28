@@ -278,6 +278,79 @@ Node* sumLists(Node* a, Node* b)
     return res;
 }
 
+// ------------------------------------ 2.6 -------------------------------------- //
+/** Given a circular linked list, implement an algorithm which returns the node
+ *  at the beginning of the loop.
+ */
+
+/** Solution - based on "Prove the list is circular" problem.
+ *  
+ *  We use 2 pointers - fastRunner and slowRunner. Slow runner advances by 1, while fast by 2.
+ *  Eventually they will meet. Let's say slowRunner has come to the first node of circle after k steps.
+ *  This also means k is the length of the non-circle part of the list. 
+ *  Also, at this time fastRunner is k steps ahead of slowRunner (as it moves twice faster).
+ *
+ *  When will fastRunner and slowRunner meet?
+ *  fastRunner also is (LOOP_SIZE - K) steps before slowRunner (where K = k % LOOP_SIZE), so they
+ *  will meet after LOOP_SIZE - K steps. When they meet, it will be K steps away from start of loop (it can be easily seen
+ *  by looking at slowRunner).
+ *  
+ *  How do we find the start of the circle now?
+ *  We put one pointer at the collision spot, and another on the head of the list. We move them both by 1 and they will meet
+ *  at the beginning of the circle after exactly k steps.
+ *
+ *  Why k, if collision spot was just K steps away from start?
+ *  As k = K + M * LOOP_SIZE, after k steps the pointer which started from collision spot will finish on the same node
+ *  as he would by doing only K steps.
+ *
+ */
+Node* findCircStart(Node* head)
+{
+    Node* slowRunner = head;
+    Node* fastRunner = head;
+
+    // Get the collision point
+    while(slowRunner != NULL && fastRunner != NULL)
+    {
+        slowRunner = slowRunner->next;
+        fastRunner = fastRunner->next->next;
+        if (slowRunner == fastRunner)
+            break;
+    }
+    
+    // Check for null values, if there is no circle
+    if (slowRunner == NULL && fastRunner == NULL)
+        return NULL;
+
+    // Get the start of circle - there is circle for sure
+    while(slowRunner != head)
+    {
+        slowRunner = slowRunner->next;
+        head = head->next;
+    }
+
+    return slowRunner;
+}
+
+
+// ------------------------------------ 2.7 -------------------------------------- //
+/** Implement a function to check if a linked list is a palindrome
+ */
+
+bool isPalindrome(Node* nd, Node*& head)
+{
+    if (nd == NULL) return true;
+
+    bool ret = isPalindrome(nd->next, head);
+
+    if (!ret) return false;
+
+    bool checkRes = nd->data == head->data;
+    head = head->next;
+
+    return checkRes;
+}
+
 // ---------------------- Testing -------------------- //
 
 int main()
@@ -285,17 +358,16 @@ int main()
     Node* a = new Node(6);
     a->appendToTail(7);
     a->appendToTail(8);
-    a->printList();
-    cout << endl;
+    a->appendToTail(8);
+    a->appendToTail(7);
+    a->appendToTail(6);
 
-    Node* b = new Node(5);
-    b->appendToTail(4);
-    b->appendToTail(9);
-    b->printList();
-    cout << endl;
+    cout << "List is: "; a->printList(); cout << endl;
 
-    Node* c = sumLists(a, b);
-    c->printList();
+    Node* head = a;
+    bool res = isPalindrome(a, head);
+
+    cout << "is palindrome: " << res << endl;
 
     return 0;
 }
