@@ -74,3 +74,34 @@ int main()
 
     return 0;
 }
+
+// ------------------------------------ 3.4 -------------------------------------- //
+/**
+ *  We have a stack, which is internally built as a set of stacks. Each stack has some (equal) capacity.
+ *  When one (internal) stack is full, the new is added.
+ *  Implement this structure.
+ *
+ *  FOLLOW UP: Implement a popAt(int stackNum) method which performs a pop on given internal stack.
+ *
+ */
+
+/** Solution
+ *
+ *  Pretty straight-forward, when one stack is full, just add another.
+ *  
+ *  FOLLOW UP:  When top is removed from one stack, it causes a chain reaction with all stacks after it.
+ *              The last element of (stack + 1) comes to the top of (stack).
+ *              
+ *              Linked list would here be a suitable structure for internal stack. (with pointer at the end
+ *              of the list for fast element pushing).
+ */          
+
+// ------------------------------------ 3.5 -------------------------------------- //
+/**
+ *  Towers of Hanoi - 3 cones, N disks on first. Move everything to the third cone.
+ */
+
+/** Solution - recursive
+ *
+ *  Idea: use one cone as a buffer to move over (n - 1) cones. Switch buffer/target in consecutive calls.
+ */
